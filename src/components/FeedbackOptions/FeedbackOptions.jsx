@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import css from './FeedbackOption.module.css';
 
-export const FeedbackOptions = ({ options, onLeaveFeedback }) => {
+export const FeedbackOptions = ({ options }) => {
   return (
     <div className={css.feedback__box}>
-      {options.map(elem => {
+      {options.map(({ name, value, update }) => {
         return (
           <button
             className={css.button}
             type="button"
-            onClick={() => onLeaveFeedback(elem)}
+            onClick={() => update(value + 1)}
           >
-            {elem}
+            {name}
           </button>
         );
       })}
