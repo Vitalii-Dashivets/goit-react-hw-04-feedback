@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-// import { Feedback } from "./Feedback/Feedback";
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 import { Statistics } from './Statistics/Statistics';
 import { Section } from './Section/Section';
@@ -18,15 +17,12 @@ export const App = () => {
     setPositivePercentage(total !== 0 ? Math.round((good / total) * 100) : 0);
   }, [good, neutral, bad, total]);
 
-  // useEffect(() => {
-  //   setPositivePercentage(total !== 0 ? Math.round((good / total) * 100) : 0);
-  // }, [good, total]);
-
   const options = [
     { name: 'good', value: good, update: setGood },
     { name: 'neutral', value: neutral, update: setNeutral },
     { name: 'bad', value: bad, update: setBad },
   ];
+
   return (
     <div>
       <Section title="Please leave feedback">
