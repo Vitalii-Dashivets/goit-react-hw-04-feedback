@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 import { Statistics } from './Statistics/Statistics';
 import { Section } from './Section/Section';
@@ -9,24 +9,44 @@ export const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
-  const [total, setTotal] = useState(0);
-  const [positivePercentage, setPositivePercentage] = useState(0);
 
-  useEffect(() => {
-    setTotal(good + neutral + bad);
-    setPositivePercentage(total !== 0 ? Math.round((good / total) * 100) : 0);
-  }, [good, neutral, bad, total]);
+  const onClickBtn = evt => {
+    switch (evt.target.name) {
+      case 'good':
+        setGood(prevValue => prevValue + 1);
+        break;
+      case 'neutral':
+        setNeutral(prevValue => prevValue + 1);
+        break;
+      case 'bad':
+        setBad(prevValue => prevValue + 1);
+        break;
+      default:
+        return;
+    }
+  };
 
-  const options = [
-    { name: 'good', value: good, update: setGood },
-    { name: 'neutral', value: neutral, update: setNeutral },
-    { name: 'bad', value: bad, update: setBad },
-  ];
+  const options = { good, neutral, bad };
+
+  function countTotal(options) {
+    const total = Object.values(options).reduce((acumulator, number) => {
+      return acumulator + number;
+    }, 0);
+
+    return total;
+  }
+
+  function countPositiveFeedbackPercentage(good, total) {
+    let positivePercentage = total !== 0 ? Math.round((good / total) * 100) : 0;
+    return positivePercentage;
+  }
+  let total = countTotal(options);
+  let positivePercentage = countPositiveFeedbackPercentage(good, total);
 
   return (
     <div>
       <Section title="Please leave feedback">
-        <FeedbackOptions options={options} />
+        <FeedbackOptions options={options} onClickBtn={onClickBtn} />
       </Section>
       {total !== 0 ? (
         <Section title="Statistics">
